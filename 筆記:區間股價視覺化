@@ -1,0 +1,22 @@
+%matplotlib inline
+import numpy as up
+import matplotlib.pyplot as plt
+import pandas as pd
+             # pip install pandas-datareader  安裝 或 更新 # pip update pandas-datareader
+import pandas_datareader.data as web  #注意底線
+import datetime 
+start=datetime.datetime(2019,8,1)  #買入日
+end=datetime.datetime(2019,10,14)   #賣出日
+df=web.DataReader("2330.TW","yahoo",start,end)  #股票代碼 ,網站, 起, 迄
+P=df["Close"] #以收盤價為dataframe
+
+
+ROI=-P.diff()/P  # (diff:當期和前一期的價差)/當期價格 
+ROI.plot()   #ROI 走向圖像化
+ROI[-20:].plot()    #20天前至今的報酬率
+
+
+P.plot()   #和前面的圖做比較 (藍色)
+P.rolling(window=10).mean().plot()  #移動平均: 10天資料的移動平均 (橘色)
+P.rolling(window=20).mean().plot()  #移動平均: 20天資料的移動平均 (綠色)
+P.rolling(window=30).mean().plot()  #移動平均: 30天資料的移動平均 (紅色)
