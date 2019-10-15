@@ -8,7 +8,7 @@ import datetime
 start=datetime.datetime(2019,8,1)  #買入日
 end=datetime.datetime(2019,10,14)   #賣出日
 df=web.DataReader("2330.TW","yahoo",start,end)  #股票代碼 ,網站, 起, 迄
-P=df["Close"] #以收盤價為dataframe
+P=df["Adj Close"] #以收盤價為dataframe
 
 
 ROI=P.diff()/P  # (diff:當期和前一期的價差)/當期價格 
@@ -35,19 +35,17 @@ start3=datetime.datetime(2019,10,1)
 end3=datetime.datetime(2019,10,13)
 df3=web.DataReader("2330.TW","yahoo",start3,end3)
 
-P1=df1["Close"]
-P2=df2["Close"]
-P3=df3["Close"]
+P1=df1["Adj Close"] 
+P2=df2["Adj Close"]
+P3=df3["Adj Close"]
 
-ROI1=P1.diff()/P1
-ROI2=P2.diff()/P2
-ROI3=P3.diff()/P3
-
-print(ROI1.mean(),ROI2.mean(),ROI3.mean())   #0.0004048789134898178      0.0031790026929653862      0.004864862436986214
+P1_ROI=(P1[-1]-P1[0])/P1[0]    #0.009746604350126382  第一期報酬率
+P2_ROI=(P2[-1]-P2[0])/P2[0]    #0.06428281093349904   第二期報酬率
+P3_ROI=(P3[-1]-P3[0])/P3[0]    #0.03571428571428571   第三期報酬率
 
 #計算MG: step2: 計算
 import math
-A=((1+ROI1.mean())*(1+ROI2.mean())*(1+ROI3.mean()))
+A=((1+P1_ROI)*(1+P2_ROI)*(1+P3_ROI))
 A=pow(A,1/3)
 ROI_MG=A-1
-ROI_MG    #0.0028145616463881584
+ROI_MG    #MG=0.036342094024558236  幾何平均報酬率
